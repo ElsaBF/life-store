@@ -3,8 +3,8 @@ users = [user_id, username, password]
 
 """
 
-users = [
+users_list = [
     [1, "Estrellita96", "gatitos123"],
-    [2, "Root", "admin"],
+    [2, "root", "admin"],
     [3, "GerenciaLifestore", "gerentes2022"]
 ]
