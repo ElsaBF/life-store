@@ -28,7 +28,7 @@ def login():
                 break
     print(msg)
 
-
+#------ Define a function for the sales
 def sales():
     # Taking the id_product column from lifestore_sales list
     sales_list = []
@@ -44,8 +44,27 @@ def sales():
         else:
             sales_dic[i] = 1
 
-   # Sorting the dictionary sales from smallest to largest
+    # Sorting the dictionary sales from smallest to largest
     sales_dic_sorted = dict(sorted(sales_dic.items(), key= lambda x:x[1]))
+    
+    # Obtaining the five most selled products
+    most_selled = []
+    i = 0
+    for element in reversed(sales_dic_sorted):
+        if i == 5:
+            break
+        else:
+            most_selled.append(element)
+            i += 1
+    
+
+    final_most_selled = []
+    for m in most_selled:
+        for p in lifestore_products:
+            if m == p[0]:
+                final_most_selled.append(p[1])
+    print(final_most_selled)
+    print(most_selled)
 
 if __name__ == "__main__":
     sales()
