@@ -1,4 +1,5 @@
 # Import the users list and the lists from lifestore_file
+from re import search
 from users import users_list
 from lifestore_file import lifestore_searches, lifestore_sales, lifestore_products
 
@@ -28,7 +29,7 @@ def login():
                 break
     print(msg)
 
-#------ Define a function for the sales
+#------ Define a function for the sales ------
 def sales():
     # Taking the id_product column from lifestore_sales list
     sales_list = []
@@ -63,8 +64,45 @@ def sales():
         for p in lifestore_products:
             if m == p[0]:
                 final_most_selled.append(p[1])
-    print(final_most_selled)
-    print(most_selled)
+    
+    print("The five most selled products are: ")
+    print(*final_most_selled, sep='\n')
+    searches()
+
+#------ Define a function for the searches ------
+### This section is pretty much like the sales function but using the lifestore_searches list
+def searches():
+    searches_list = []
+    for s in lifestore_searches:
+        search = s[1]
+        searches_list.append(search)
+
+    searches_dic = {}
+    for i in searches_list:
+        if i in searches_dic:
+            searches_dic[i] = searches_dic[i] + 1
+        else:
+            searches_dic[i] = 1
+ 
+    searches_dic_sorted = dict(sorted(searches_dic.items(), key= lambda x:x[1]))
+    
+    most_searched = []
+    i = 0
+    for element in reversed(searches_dic_sorted):
+        if i == 10:
+            break
+        else:
+            most_searched.append(element)
+            i += 1
+
+    final_most_searched = []
+    for m in most_searched:
+        for p in lifestore_products:
+            if m == p[0]:
+                final_most_searched.append(p[1])
+    
+    print("The ten most searched products are: ")
+    print(*final_most_searched, sep='\n')
 
 if __name__ == "__main__":
     sales()
