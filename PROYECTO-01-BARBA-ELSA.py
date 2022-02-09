@@ -1,38 +1,51 @@
-# Del archivo users.py importamos la lista llamada users_list
+# Import the users list and the lists from lifestore_file
 from users import users_list
+from lifestore_file import lifestore_searches, lifestore_sales, lifestore_products
 
-### Definimos una función para realizar el login
+#------ Define a function for the login ------
 def login():
-    # Se muestra un mensaje de bienvenida para el usuario
-    mensaje_bienvenida = "Bienvenido, por favor ingresa tus credenciales para acceder al sistema."
-    print(mensaje_bienvenida)
-    # Se solicitan nombre de usuario y contraseña
+    # Displayng a welcome message
+    welcome_message = "Welcome, please enter your username and your password."
+    print(welcome_message)
+    # Request username and password
     user = input("Escriba el nombre de usuario: ")
     password = input("Escriba la contraseña: ")
-    # Este mensaje se utiliza si el usuario no es encontrado en la lista
-    msg = "Usuario inexistente"
+    # This message is displayed if the user is unregistered
+    msg = "Unregistered user"
 
     for u in users_list:
-        # Este if busca que el usuario exista y esté registrado en la posición [1] de la lista
+        # Verifying if the user exist in the list
         if user == u[1]:
-            # Aquí se busca que la contraseña exista en la base de datos y coincida con el usuario 
+            # Verifying if the password exist and match with the user
             if password == u[2]:
-                # Acceso aprobado para el usuario
-                print("Acceso permitido")
-                msg = "El usuario " + user + " inició sesión exitosamente"
-                #Aquí va el nombre de la función a la que acceder en caso de que las credenciales sean válidas
-                analisis()
-            # Si la contraseña es incorrecta se pasa a esta sección
+                print("Access granted")
+                msg = "The user " + user + " successfully logged in"
+                # The user can access to the next function only if le login is correct
+                sales()
             else:
-                print("Acceso denegado")
-                msg = "Contraseña incorrecta"
+                print("Access denied")
+                msg = "Incorrect password"
                 break
-    # Si el usuario no existe se muestra el mensaje
     print(msg)
 
-### Definimos una función para comenzar el análisis de los datos
-def analisis():
-    options = input("Por favor elige a qué información quieres acceder: ")
-    
+
+def sales():
+    # Taking the id_product column from lifestore_sales list
+    sales_list = []
+    for s in lifestore_sales:
+        sale = s[1]
+        sales_list.append(sale)
+
+    # Creating a dictionary with the id_products and the number of sales
+    sales_dic = {}
+    for i in sales_list:
+        if i in sales_dic:
+            sales_dic[i] = sales_dic[i] + 1
+        else:
+            sales_dic[i] = 1
+
+   # Sorting the dictionary sales from smallest to largest
+    sales_dic_sorted = dict(sorted(sales_dic.items(), key= lambda x:x[1]))
+
 if __name__ == "__main__":
-    login()
+    sales()
