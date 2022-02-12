@@ -52,7 +52,7 @@ def init_values():
 
 def main():
     sales_list, searches_list, products_list = init_values()
-    sales_2(sales_list, products_list)
+    searches_2(searches_list, products_list)
 
 
 #------ Define a function for the sales ------
@@ -125,7 +125,7 @@ def searches(searches_list):
     print("The ten most searched products are: ")
     print(*final_most_searched, sep='\n')
 
-#------ Define another function for sales
+#------ Define another function for sales ------
 def sales_2(sales_list, products_list):
     results_per_item = {}
     category_dict = {}
@@ -167,7 +167,50 @@ def sales_2(sales_list, products_list):
             r_per_item = v[1]
             print(f"'{products_list[id_product][:20]}...' has been bought {r_per_item} times")
             i += 1
-    #print(result)
+
+#------ Define a function for the lower searches
+# This funtion is similar to sales_2 but displays de lower searches per category
+def searches_2(searches_list, products_list):
+    results_per_item = {}
+    category_dict = {}
+
+    # Creating nested dictionaries for the categories
+    for p in lifestore_products:
+        id_product = p[0]
+        category = p[3]
+        results_per_item[id_product] = 0
+        if category not in category_dict:
+            category_dict[category] = {}
+            category_dict[category][id_product] = 0
+        else:
+            category_dict[category][id_product] = 0
+    
+    for s in searches_list:
+        results_per_item[s] = results_per_item[s] + 1
+    
+    # Connecting the number of sales dictionary with the category dictionary
+    #result = {}
+    for e in category_dict.items():
+        category_label = e[0]
+        category_dict_int = e[1]
+        for v in category_dict_int.items():
+            key = v[0]
+            category_dict_int[key] = results_per_item[key]
+        # Sorting from mayor to minor the intern dictionary
+        category_dict_int = dict(sorted(category_dict_int.items(), key= lambda x:x[1]))
+        # Set new values for final dictionary that contains the sorted data
+        #result[category_label] = category_dict_int
+
+        ####
+        i = 0
+        print("Categoria: " + category_label)
+        for v in category_dict_int.items():
+            if i == 10:
+                break
+            id_product = v[0]
+            r_per_item = v[1]
+            print(f"'{products_list[id_product][:20]}...' has been searched {r_per_item} times")
+            i += 1
 
 if __name__ == "__main__":
     main()
