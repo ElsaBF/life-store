@@ -46,13 +46,27 @@ def init_values():
         id_product = e[0]
         name_product = e[1]
         products_list[id_product] = name_product
+    
+    results_per_item = {}
+    category_dict = {}
+    # Creating nested dictionaries for the categories
+    for p in lifestore_products:
+        id_product = p[0]
+        category = p[3]
+        results_per_item[id_product] = 0
+        if category not in category_dict:
+            category_dict[category] = {}
+            category_dict[category][id_product] = 0
+        else:
+            category_dict[category][id_product] = 0
 
-    return sales_list, searches_list, products_list
+    return sales_list, searches_list, products_list, results_per_item, category_dict
     
 
 def main():
-    sales_list, searches_list, products_list = init_values()
-    searches_2(searches_list, products_list)
+    sales_list, searches_list, products_list, results_per_item, category_dict = init_values()
+    #sales_2(searches_list,  products_list, results_per_item, category_dict)
+    score(products_list)
 
 
 #------ Define a function for the sales ------
@@ -126,21 +140,7 @@ def searches(searches_list):
     print(*final_most_searched, sep='\n')
 
 #------ Define another function for sales ------
-def sales_2(sales_list, products_list):
-    results_per_item = {}
-    category_dict = {}
-
-    # Creating nested dictionaries for the categories
-    for p in lifestore_products:
-        id_product = p[0]
-        category = p[3]
-        results_per_item[id_product] = 0
-        if category not in category_dict:
-            category_dict[category] = {}
-            category_dict[category][id_product] = 0
-        else:
-            category_dict[category][id_product] = 0
-    
+def sales_2(sales_list, products_list, results_per_item, category_dict):
     for s in sales_list:
         results_per_item[s] = results_per_item[s] + 1
     
@@ -170,21 +170,7 @@ def sales_2(sales_list, products_list):
 
 #------ Define a function for the lower searches
 # This funtion is similar to sales_2 but displays de lower searches per category
-def searches_2(searches_list, products_list):
-    results_per_item = {}
-    category_dict = {}
-
-    # Creating nested dictionaries for the categories
-    for p in lifestore_products:
-        id_product = p[0]
-        category = p[3]
-        results_per_item[id_product] = 0
-        if category not in category_dict:
-            category_dict[category] = {}
-            category_dict[category][id_product] = 0
-        else:
-            category_dict[category][id_product] = 0
-    
+def searches_2(searches_list, products_list, results_per_item, category_dict):
     for s in searches_list:
         results_per_item[s] = results_per_item[s] + 1
     
@@ -211,6 +197,39 @@ def searches_2(searches_list, products_list):
             r_per_item = v[1]
             print(f"'{products_list[id_product][:20]}...' has been searched {r_per_item} times")
             i += 1
+            
+###
+def score(products_list):
+    avg_item_score = {}
+    for e in lifestore_sales:
+        id_product = e[1]
+        score = e[2]
+        isRefound = e[-1]
+        if id_product not in avg_item_score:
+            avg_item_score[id_product] = [score]
+        else:
+            avg_item_score[id_product].append(score) 
+    
+    result = []
+    for e in avg_item_score.items():
+        id_product = e[0]
+        internal_value = e[1]
+        avg = sum(internal_value) / len(internal_value)
+        result.append([id_product, avg])
+    result = sorted(result, key=lambda x: x[1])
+    
+    print("----- Best ranked -----")
+    for i in range(0, 5):
+        id_product = result[-i-1][0]
+        score = result[-i-1][1]
+        print(f"'{products_list[id_product][:20]}...' has a score of {score}")
+    
+    print("----- Worst ranked -----")
+    for i in range(0, 5):
+        id_product = result[i][0]
+        score = result[i][1]
+        print(f"'{products_list[id_product][:20]}...' has a score of {score}")
+    
 
 if __name__ == "__main__":
     main()
