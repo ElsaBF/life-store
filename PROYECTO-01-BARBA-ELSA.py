@@ -45,7 +45,8 @@ def init_values():
     for e in lifestore_products:
         id_product = e[0]
         name_product = e[1]
-        products_list[id_product] = name_product
+        product_price = e[2]
+        products_list[id_product] = [name_product, product_price]
     
     results_per_item = {}
     category_dict = {}
@@ -66,7 +67,8 @@ def init_values():
 def main():
     sales_list, searches_list, products_list, results_per_item, category_dict = init_values()
     #sales_2(searches_list,  products_list, results_per_item, category_dict)
-    score(products_list)
+    #searches_2(searches_list, products_list, results_per_item, category_dict)
+    statistics(sales_list, products_list)
 
 
 #------ Define a function for the sales ------
@@ -165,7 +167,7 @@ def sales_2(sales_list, products_list, results_per_item, category_dict):
                 break
             id_product = v[0]
             r_per_item = v[1]
-            print(f"'{products_list[id_product][:20]}...' has been bought {r_per_item} times")
+            print(f"'{products_list[id_product][0][:20]}...' has been bought {r_per_item} times")
             i += 1
 
 #------ Define a function for the lower searches
@@ -195,7 +197,7 @@ def searches_2(searches_list, products_list, results_per_item, category_dict):
                 break
             id_product = v[0]
             r_per_item = v[1]
-            print(f"'{products_list[id_product][:20]}...' has been searched {r_per_item} times")
+            print(f"'{products_list[id_product][0][:20]}...' has been searched {r_per_item} times")
             i += 1
             
 ###
@@ -222,14 +224,45 @@ def score(products_list):
     for i in range(0, 5):
         id_product = result[-i-1][0]
         score = result[-i-1][1]
-        print(f"'{products_list[id_product][:20]}...' has a score of {score}")
+        print(f"'{products_list[id_product][0][:20]}...' has a score of {score}")
     
     print("----- Worst ranked -----")
     for i in range(0, 5):
         id_product = result[i][0]
         score = result[i][1]
-        print(f"'{products_list[id_product][:20]}...' has a score of {score}")
+        print(f"'{products_list[id_product][0][:20]}...' has a score of {score}")
     
+###
+def statistics(sales_list, products_list):
+    # Total incomes per year
+    sales_dic = {}
+    for e in sales_list:
+        if e in sales_dic:
+            sales_dic[e] = sales_dic[e] + products_list[e][1]
+        else:
+            sales_dic[e] = products_list[e][1]
 
+    incomes_per_year = sum(list(sales_dic.values()))
+    
+    # Total sales per year
+    print("The total incomes for the 2020' sales are: ", incomes_per_year)
+    print("The total number of sales for the 2020 are: ", len(sales_list))
+    
+    sales_per_month     = [0,0,0,0,0,0,0,0,0,0,0,0]
+    incomes_per_month   = [0,0,0,0,0,0,0,0,0,0,0,0]
+    for e in lifestore_sales:
+        id_product = e[1]
+        month = int(e[3][3:-5]) - 1 #dd/mm/yyyy
+        year = int(e[3][6:]) #[dd/mm/]-> yyyy
+        if year != 2020:
+            continue        # Skip all the following lines 
+        sales_per_month[month] += 1
+        incomes_per_month[month] += products_list[id_product][1]
+        
+    print(sales_per_month)
+    print(incomes_per_month)
+    
+    
+    
 if __name__ == "__main__":
     main()
