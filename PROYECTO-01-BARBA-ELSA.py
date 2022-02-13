@@ -74,12 +74,12 @@ def main():
     
     # Uncoment the name of the function that you want to run
     
-    sales(sales_list)
+    #sales(sales_list)
     #searches(searches_list)
     #sales_2(searches_list,  products_list, results_per_item, category_dict)
     #searches_2(searches_list, products_list, results_per_item, category_dict)
     #score(products_list)
-    #statistics(sales_list, products_list)
+    statistics(sales_list, products_list)
     
 
 
@@ -201,6 +201,7 @@ def searches_2(searches_list, products_list, results_per_item, category_dict):
             id_product = v[0]
             r_per_item = v[1]
             print(f"'{products_list[id_product][0][:20]}...' has been searched {r_per_item} times")
+
             i += 1
             
 ###------ Defining a funtion to ranking products ------
@@ -280,3 +281,4 @@ def statistics(sales_list, products_list):
     
 if __name__ == "__main__":
     main()
+    #login()
