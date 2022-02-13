@@ -74,12 +74,12 @@ def main():
     
     # Uncoment the name of the function that you want to run
     
-    #sales(sales_list)
+    sales(sales_list)
     #searches(searches_list)
     #sales_2(searches_list,  products_list, results_per_item, category_dict)
     #searches_2(searches_list, products_list, results_per_item, category_dict)
     #score(products_list)
-    statistics(sales_list, products_list)
+    #statistics(sales_list, products_list)
     
 
 
@@ -97,24 +97,24 @@ def sales(sales_list):
     sales_dic_sorted = dict(sorted(sales_dic.items(), key= lambda x:x[1]))
     
     # Obtaining only the five most selled products
-    most_selled = []
+    most_sold = []
     i = 0
     for element in reversed(sales_dic_sorted):
         if i == 5:
             break
         else:
-            most_selled.append(element)
+            most_sold.append(element)
             i += 1
     
     # Matching the id_product with the name of the product 
-    final_most_selled = []
-    for m in most_selled:
+    final_most_sold = []
+    for m in most_sold:
         for p in lifestore_products:
             if m == p[0]:
-                final_most_selled.append(p[1])
+                final_most_sold.append(p[1])
     
-    print("The five most selled products are: ")
-    print(*final_most_selled, sep='\n')
+    print("The five most sold products are: ")
+    print(*final_most_sold, sep='\n')
 
 #------ Define a function for the searches ------
 ### This section is pretty much like the sales function but using the lifestore_searches list
