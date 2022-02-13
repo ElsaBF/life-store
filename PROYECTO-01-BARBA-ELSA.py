@@ -74,12 +74,12 @@ def main():
     
     # Uncoment the name of the function that you want to run
     
-    sales(sales_list)
+    #sales(sales_list)
     #searches(searches_list)
     #sales_2(searches_list,  products_list, results_per_item, category_dict)
     #searches_2(searches_list, products_list, results_per_item, category_dict)
     #score(products_list)
-    #statistics(sales_list, products_list)
+    statistics(sales_list, products_list)
     
 
 
@@ -224,7 +224,6 @@ def score(products_list):
         avg = sum(internal_value) / len(internal_value)
         result.append([id_product, avg])
     result = sorted(result, key=lambda x: x[1])
-    print(result)
     
     # Displaying the results
     print("----- Best ranked -----")
@@ -280,4 +279,4 @@ def statistics(sales_list, products_list):
         j = j + 1
     
 if __name__ == "__main__":
-    login()
+    main()
